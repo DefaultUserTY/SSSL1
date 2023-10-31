@@ -1,73 +1,118 @@
-# ПРЗ 1. Сбор логов
+# ПРЗ 3. Wazuh
 Чадов Виктор Тимофеевич ББМО-01-22
 
-## 1. Создать 2 виртуальные машины на базе ОС Debian 12
+## 1. Развернем 2 виртуальные машины (сервер и клиент)
 
-Две виртуальные машины debian
-
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/70675827-1f09-45fc-99b0-f83917f6cf19)
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/4f9f5084-2631-4109-b90e-34a235f8de11)
 
 ## 2. Обеспечить между ними сетевой обмен
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/1a35823f-a7d4-43b2-b36a-7513d328b698)
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/081f6046-871a-457c-96bb-e5f170da7323)
 
-## 3. Включить на 1й из ВМ передачу логов по протоколу rsyslog на 2ю ВМ
+## 3. Развернем на сервере Wazuh
 
-Запуск rsyslog
+Скачаем и установим Wazuh
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/805e833f-9798-4636-ab71-2bf5141e273b)
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/c2a177d9-8126-437e-b676-4f227b5bb878)
 
-Изменение конфига rsyslog машины получателя sudo nano /etc/rsyslog.conf
+## 4. Подключим агента
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/6f30f09a-c83d-48f1-b7d9-b16cfbb3697a)
+Устанавливаем агент
 
-На машине отправителя создадим файл конфигурации rsyslog, запишем туда правило перенаправляющее все логи на получателя.
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/86dc8e9c-7db8-4f46-81eb-6a84e47681a9)
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/e6f0c23e-d43e-40ab-b4a2-9c1e9ccdbdd3)
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/2f64c754-32f9-4e3d-9cfb-d2a046616d18)
 
-Проверим работу
+## 5. Подключимcя к Wazuh
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/8b23221e-dc52-4be0-b6ec-adfae3a9f2b4)
+Проверим подключение и посмотрим данные о агенте
 
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/8a5329d5-3805-40a2-96e9-0c2c33756ee8)
 
-## 4. Установить и настроить получение логов на сервер с использованием Loki
+Общая вкладка о агенте
 
-Установим loki
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/31b833ec-942c-42cf-9ca1-a6dc8652e910)
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/266173aa-a033-48d5-bc54-62ee075118d3)
+### Большая часть вкладок изначально пусты, однако уже можно посмотреть на часть из них
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/133cb5ef-ddb5-4861-b0a0-f22b29a8d02b)
+Cобытия безопасности
 
-Запустим loki
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/d29f8484-e610-49f2-b7d2-8ea8a3fb95e3)
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/c1fe4c07-ce72-4ce6-9a98-afc7edbf5805)
+Mitre Attack
 
-Проверим в браузере
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/2b967947-51c5-470f-8eae-9c1739a8772b)
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/57510713-5319-4949-8ea9-1178102032fa)
+Nist
 
-Установим приемник promtail
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/68db3abe-a4b8-440e-b23d-aafec8571621)
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/99cdd59d-3e8a-465b-8c6b-a44d90f4ca99)
+## 6. Создадим проверку целостности файлов
 
-Изменим конфиг promtail для передачи данных на получателя
+Отредактируем конфигурацию агента /var/ossec/etc/ossec.conf добавив в список проверяемых папок в реальном времени /home
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/ec75495b-5333-4b1a-9646-45a8d48c2a20)
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/083f256a-8895-4ad2-8bd8-d37000a5d3a7)
 
-Запустим promtail 
+Видим добавленные файлы из папки /home
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/fc51b3ac-6c9d-4220-b318-2408bb3e5c58)
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/63fa16b0-a501-4264-9867-d85320a72067)
 
-Проверим в браузере
+Создадим файл 1111 для показа возможностей Wazuh
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/0f098ea5-0908-47c1-b431-98bb7570ce65)
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/02403912-9b24-4ab8-baf6-87cf7ca41ee3)
 
-Установим SigNoz
+## 7. Создадим настройку выявления уязвимостей
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/0d17f7ba-3815-4ab0-af6d-f15c5ee3c92d)
+Сконфигурируем общего агента на сервере
 
-Проверим в браузере
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/9a1eeb49-64fc-4a35-a33c-bdbb705f871e)
 
-![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/d1234847-9fb0-49e4-9159-b9f997b782af)
+Включим обнаружение уязвимостей для Ubuntu
 
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/b4f48464-a81d-48e7-b089-ef53d7de95a9)
 
+Видим список уязвимостей
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/3fa3bb12-6e0a-4a8c-8f40-a9dde6878426)
+
+## 8. Создадим выявление скрытых процессов
+
+Установим rootkit
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/b251a5e3-c294-4bb1-91d5-2a8598508f30)
+
+Изменим частоту проверок агента до 30 секунд
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/042388d1-b750-4a49-b90c-0169b46baa4f)
+
+Имитация атаки
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/c5692a2f-0717-4489-a54f-fc3f45c9372e)
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/1d296d24-a713-44d4-9ecb-7eb428f71272)
+
+Посмотрим результат
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/04d34a89-d459-48a5-b414-f9aa6ddb48b8)
+
+## 9. Создадим выявление sql иньекций
+
+Добавим отслеживание apache
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/54fd37b4-69c9-40e0-afcc-57dc1e46c0b9)
+
+Установим apache
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/36fe22cc-689c-4ac1-9278-be93e23109aa)
+
+Сделаем иньекцию 
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/f36bac15-94f9-48cc-9f6b-6f81f6625925)
+
+Видим sql иньекцию
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/99e10979-1cd9-4ad2-b2c6-88c506231e1c)
+
+## 10. Выводы
+
+В процессе выполнения данной работы был изучен функционал Wazuh, настроены и показаны механизмы его работы.
