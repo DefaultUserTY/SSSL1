@@ -102,4 +102,14 @@ sudo ./bootstrap.sh && sudo ./configure && sudo make && sudo make install && sud
 
 ![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/977872b4-8900-4dff-bc74-545f943b2f9b)
 
-## 14. Проверка GreenBone
+## 14. Проведение скана
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/4b21a377-ab5f-4b64-9062-b1d73da2774e)
+
+Для решения ошибки скана требуется подправить конфиг
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/d2a7819b-765f-4d8d-849f-b5b5121e3b88)
+
+## 14. Смотрим скан
+
+![image](https://github.com/DefaultUserTY/SSSL1/assets/131360754/ac496593-1b89-49be-9203-c3589156f135)
